@@ -1,61 +1,104 @@
-import { motion } from "framer-motion";
+"use client";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const Reveal = ({ children, delay = 0, className = '' }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.6, delay }}
-        className={className}
-    >
-        {children}
-    </motion.div>
+const Reveal = ({ children, delay = 0, className = "" }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.15 }}
+    transition={{ duration: 0.6, delay }}
+    className={className}
+  >
+    {children}
+  </motion.div>
 );
 
 function Section5() {
-    return (
-        <section className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <div>
-                <Reveal>
-                    <h3 className="text-2xl font-bold">Perguntas frequentes</h3>
-                </Reveal>
+  const { t } = useTranslation();
+  const [openIndex, setOpenIndex] = useState(null);
 
-                <div className="mt-6 space-y-4">
-                    <Reveal>
-                        <details className="p-4 bg-white rounded-lg shadow">
-                            <summary className="font-medium">Como começo a receber via Pix?</summary>
-                            <p className="mt-2 text-sm text-slate-600">Basta criar sua conta, validar dados e gerar cobrancas QR ou integrar a nossa API.</p>
-                        </details>
-                    </Reveal>
+  const faqs = [
+    { q: t("faq1Q"), a: t("faq1A") },
+    { q: t("faq2Q"), a: t("faq2A") },
+    { q: t("faq3Q"), a: t("faq3A") },
+  ];
 
-                    <Reveal delay={0.06}>
-                        <details className="p-4 bg-white rounded-lg shadow">
-                            <summary className="font-medium">Quais são os prazos de recebimento?</summary>
-                            <p className="mt-2 text-sm text-slate-600">Pix é instantâneo. Pagamentos por cartão seguem o ciclo bancário e o plano escolhido.</p>
-                        </details>
-                    </Reveal>
+  return (
+    <section className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      {/* FAQ */}
+      <div>
+        <Reveal>
+          <h3 className="text-2xl font-bold">{t("faqTitle")}</h3>
+        </Reveal>
 
-                    <Reveal delay={0.12}>
-                        <details className="p-4 bg-white rounded-lg shadow">
-                            <summary className="font-medium">Como é feita a integração?</summary>
-                            <p className="mt-2 text-sm text-slate-600">Oferecemos APIs REST, SDKs e plugins para plataformas populares.</p>
-                        </details>
-                    </Reveal>
+        <div className="mt-6 space-y-4">
+          {faqs.map((faq, i) => (
+            <Reveal key={i} delay={i * 0.06}>
+              <div
+                className="p-4 bg-white rounded-lg shadow cursor-pointer hover:shadow-lg transition"
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              >
+                <div className="font-medium flex justify-between items-center">
+                  {faq.q}
+                  <span
+                    className={`transition-transform ${
+                      openIndex === i ? "rotate-45" : ""
+                    }`}
+                  >
+                    +
+                  </span>
                 </div>
-            </div>
 
-            <div className="p-8 bg-indigo-600 rounded-2xl text-white shadow-lg">
-                <Reveal>
-                    <h3 className="text-2xl font-bold">Pronto para receber mais rápido?</h3>
-                </Reveal>
-                <Reveal delay={0.08}>
-                    <p className="mt-4 text-slate-200">Abra sua conta SwiftCred e comece a aceitar pagamentos hoje mesmo. Suporte 24/7 e integração em minutos.</p>
-                </Reveal>
-                <Reveal delay={0.16}>
-                    <a href="#" className="mt-6 inline-block bg-white text-indigo-600 px-5 py-3 rounded-lg font-semibold">Criar conta gratuita</a>
-                </Reveal>
-            </div>
-        </section>
-    )
+                <AnimatePresence>
+                  {openIndex === i && (
+                    <motion.p
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-2 text-sm text-slate-600"
+                    >
+                      {faq.a}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+
+      {/* Criar conta */}
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+        className="p-8 bg-indigo-600 rounded-2xl text-white shadow-lg cursor-pointer hover:shadow-2xl"
+      >
+        <Reveal>
+          <h3 className="text-2xl font-bold">{t("createAccountTitle")}</h3>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <p className="mt-4 text-slate-200">{t("createAccountDesc")}</p>
+        </Reveal>
+        <Reveal delay={0.16}>
+          <motion.a
+            href="#"
+            whileHover={{
+              scale: 1.05,
+              background: "linear-gradient(to right, #6366f1, #06b6d4)",
+              color: "#fff",
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-6 inline-block bg-white text-indigo-600 px-5 py-3 rounded-lg font-semibold transition"
+          >
+            {t("createAccountButton")}
+          </motion.a>
+        </Reveal>
+      </motion.div>
+    </section>
+  );
 }
+
 export default Section5;
