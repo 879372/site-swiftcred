@@ -35,7 +35,6 @@ function Header() {
 
   return (
     <header className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between relative">
-      {/* Logo */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-cyan-500 flex items-center justify-center text-white font-bold shadow-lg transition-transform duration-300 hover:scale-110">
           SC
@@ -46,7 +45,6 @@ function Header() {
         </div>
       </div>
 
-      {/* Desktop nav */}
       <nav className="hidden md:flex gap-6 items-center text-sm text-slate-700">
         {navItems.map((item, i) => (
           <a
@@ -58,7 +56,6 @@ function Header() {
           </a>
         ))}
 
-        {/* Language selector */}
         <div className="relative">
           <button
             onClick={() => setLangOpen(!langOpen)}
@@ -93,7 +90,6 @@ function Header() {
         </button>
       </nav>
 
-      {/* Mobile Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden p-2 rounded-lg border text-slate-700 transition-colors duration-300 hover:bg-slate-100"
@@ -101,7 +97,6 @@ function Header() {
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      {/* Mobile Menu */}
       {isOpen && (
         <div className="absolute top-full left-0 w-full bg-gradient-to-b from-white to-gray-100 shadow-lg border-t md:hidden animate-fadeIn z-50">
           <nav className="flex flex-col p-4 gap-4 text-sm text-slate-700 text-center">
@@ -116,7 +111,6 @@ function Header() {
               </a>
             ))}
 
-            {/* Mobile language selector */}
             <div className="flex justify-center mt-2 gap-2">
               {languages.map((lang) => (
                 <button

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Footer from "./components/footer/footer";
 import Header from "./components/header/header";
 import Section1 from "./components/section1/section1";
@@ -11,22 +11,27 @@ import Section5 from "./components/section5/section5";
 import "./i18n";
 
 function App() {
-  const [showTopBtn, setShowTopBtn] = useState(false);
+const [showTopBtn, setShowTopBtn] = useState(false);
+const containerRef = useRef(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowTopBtn(window.scrollY > 100);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+useEffect(() => {
+  const container = containerRef.current;
+  if (!container) return;
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleScroll = () => {
+    setShowTopBtn(container.scrollTop > 100);
   };
 
+  container.addEventListener("scroll", handleScroll);
+  return () => container.removeEventListener("scroll", handleScroll);
+}, []);
+
+const scrollToTop = () => {
+  containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+};
+
   return (
-    <div className="h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 text-slate-900 antialiased overflow-auto">
+    <div ref={containerRef} className="h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 text-slate-900 antialiased overflow-auto">
       <Header />
       <main className="max-w-7xl mx-auto px-6">
         <Section1 />
