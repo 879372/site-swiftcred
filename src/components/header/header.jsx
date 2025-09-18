@@ -116,9 +116,10 @@ function Header() {
                 <button
                   key={lang.code}
                   onClick={() => handleChangeLanguage(lang.code)}
-                  className="px-3 py-1 border rounded-lg hover:bg-indigo-50"
+                  className="w-full px-3 py-2 text-left hover:bg-indigo-50 flex items-center gap-2"
                 >
-                  {lang.flag}
+                  <img src={lang.flag} alt={lang.label} className="w-5 h-5 rounded-sm" />
+                  {lang.label}
                 </button>
               ))}
             </div>

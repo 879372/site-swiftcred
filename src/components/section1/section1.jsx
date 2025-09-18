@@ -78,7 +78,7 @@ function Section1() {
         </div>
 
         <Reveal delay={0.4}>
-          <div className="mt-8 flex gap-4 flex-wrap text-sm text-slate-600">
+          <div className="mt-8 grid md:grid-cols-2 gap-4 text-sm text-slate-600">
             {features.map((f, i) => (
               <div
                 key={i}

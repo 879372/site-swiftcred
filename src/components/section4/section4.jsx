@@ -45,7 +45,7 @@ function Section4() {
   ];
 
   return (
-    <section className="mt-20" id="logista">
+    <section className="mt-20" id="lojista">
       <div className="w-full">
         <Reveal>
           <h3 className="text-2xl font-bold">{t("section4Title")}</h3>
